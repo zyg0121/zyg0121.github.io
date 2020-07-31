@@ -11,4 +11,4 @@ css文件夹下index.css为首页所用css,blog.css为文章页所用css
 在首页末尾用js来实现本地时间的展示
 
 另外个人实际用博客地址(https://www.hiyiguo.cn)，采用的typecho博客程序
-本作业演示地址：https://www.hiyiguo.cn/usr/uploads/2020/07/my_work/index.html
+本作业演示地址：https://zyg0121.github.io
