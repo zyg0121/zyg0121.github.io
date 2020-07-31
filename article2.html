@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="css/blog.css" rel="stylesheet" type="text/css">
+<title>利用qt5框架实现的学生信息管理系统_依果的小站</title>
+</head>
+<body>
+	<div class="container">
+		
+		<header> 
+			<a href="#"> <h4 class="logo">依果的小站</h4></a>
+			<nav>
+				<ul>
+					<li><a href="index.html">返回首页</a></li>
+					<li><a href="https://www.hiyiguo.cn" target="_blank">博客网站</a></li>
+				</ul>
+			</nav>
+		</header>
+		
+		<section id="mainContent"> 
+			<h1>基于weka的对种子几何特性的分类分析</h1><p>这是上学期某课程的作业，就是完成任务瞎鸡儿写的，放在这里保存一下罢了。</p><h1>摘要</h1><p>本文通过运用weka开源数据挖掘软件，对开源的真实采集的种子几何特性数据集进行分析研究，并转换为weka所用的数据类型，并在weka中运用了IBK，J48，NaiveBayes三种方法进行分类。从分析结果来看采用IBK的方法正确分类的实例的比例最高，但相比其他方法准确率相差较小。对于大量混合在一起的种子需要进行不同种类分类时具有一定的参考价值。<br>关键词：weka 分类分析 种子几何特性</p><h1>weka简介</h1><p>Weka是由新西兰怀卡托大学开发的智能分析系统（Waikato Environment for Knowledge Analysis），这是一款非商业化的，完全免费的，基于Java环境下的开源的机器学习以及数据挖掘软件。可以在Windows, Mac OS, Linux操作系统的环境下运行，同时软件所有的代码也是开源的。而且十分有趣的是，该软件的缩写weka也是新西兰独有的一种鸟名，而同时Weka的主要开发者同时恰好来自新西兰的怀卡托大学(the University of Waikato)。weka集合了许多能进行数据挖掘的机器学习算法，其中有对数据进行预处理，分类，回归、聚类、关联规则和可视化工具。</p><h1>数据来源和处理</h1><p>本文的数据来源于加州大学尔湾分校机器学习资料库。获取数据时共有210个实例数这些数据使用软X射线技术进行采集，而使用的软X射线技术检测是无损的，并且比其他更先进的成像技术（如扫描显微镜或激光技术）便宜得多。而每个实例数分别有7个属性变量，分别是面积A，周长P，紧密度C ($$C=\frac{4\times\pi\times A}{P^2}$$)，籽粒长度，籽粒宽度，不对称系数以及籽粒槽的长度（在13x18 cm X射线柯达平板上记录，单位为cm）。其中在数据的最后一列提供了实际的种类情况。由此我们可以进行分类方法的测试，以达到根据软X射线技术检测的数据来判断种子的种类。<br>由于数据来源为普通的文本文件，可以将得到的数据放在Excel中排版，并将其转化为csv文件。但由于weka采用的是自有的ARFF（Attribute-Relation File Format）文件，这种文件是一种ASCII类型的文件，和csv文件格式类似，但Weka头部有每列数据的属性标识。用%开头来表示一行注释内容，用@开头表示包头。如本文所用的数据集：</p><pre><code>@relation send_database
+@attribute area numeric
+@attribute perimeter numeric
+@attribute compactnessC=4*pi*A/P^2 numeric
+@attribute 'length of kernel' numeric
+@attribute 'width of kernel' numeric
+@attribute 'asymmetry coefficient' numeric
+@attribute 'length of kernel groove' numeric
+@attribute type {1,2,3}
+
+@data
+%以下为数据内容</code></pre><p>以上文件中@RELATION后面是关系名，在只打开一个文件时，就是该文件的文件名，@ATTRIBUTE指的是该列的属性，包括数值型，分类型，字符串型，日期和时间型，@data标识符，用来表明数据的具体内容。本文使用的数据集仅使用数值型（以numeric结尾），分类型（以花括号分类）。我们将csv文件中的内容头部加入上述内容，以ARFF格式保存即可以使用weka进行数据挖掘。在较新版本的weka中可以直接打开csv文件并另存为ARFF文件，但有时候需要进行一定的调整，并不是很方便。</p><h1>分类算法分析</h1><h2>K-最近邻分类方法（KNN，k-Nearest Neighbor, 在weka中是IBK算法）</h2><p>K最近邻分类算法是数据挖掘分类技术中比较简单的方法之一。所谓K最近邻，说的是每个样本都可以用它最接近的k个邻居来代表。Cover和Hart在1968年提出了最初的邻近算法。KNN属于基于实例的学习（instance-based learning），属于懒惰学习（lazy learning）即没有训练阶段，数据集在事先已有了分类和特征值，待收到新样本后直接进行处理。<br>算法的思路是：如果一个样本在特征空间中的k个最邻近的样本中的大多数属于某一个类别，则该样本也划分为这个类别。KNN算法中，所选择的邻居都是已经正确分类的对象。<br>该方法在定类决策上只依据最邻近的一个或者几个样本的类别来决定待分样本所属的类别。虽然KNN是简单且容易实现的算法，但是当训练数据集很大时，需要大量的存储空间，而且同时需要计算待测样本和训练数据集中所有样本的距离，所以非常耗时。<br>且KNN对于随机分布的数据集分类效果较差，对于类内间距小，类间间距大的数据集分类效果好，而且对于边界不规则的数据效果好于线性分类器。<br>同时KNN对于样本不均衡的数据效果不好，需要进行改进。改进的方法时对k个邻数据赋予权重，比如距离测试样本越近，权重越大。</p><h2>朴素贝叶斯算法（Naive Bayes）</h2><p>朴素贝叶斯算法是基于贝叶斯定理和特征条件独立假设实现的。算法的实现如下：<br>输入以训练集为m个样本n个维度$$T=\left(x_1,y_1\right),\left(x_2,y_2\right),\ldots,\left(x_m,y_m\right)$$,共K个特征输出类别，分别为$$y\in\{c_1,c_2,\ldots,c_K\}$$.输出:为实例$$X(test)$$的分类。<br>首先计算计算Y的K个先验概率$$P\left(Y=c_k\right)$$<br>(以下不知道为啥latex公式渲染不出来，先截图吧)<br><img src="https://www.hiyiguo.cn/usr/uploads/2020/03/939778206.png"  width="100%" alt="微信截图_20200324222510.png" title="微信截图_20200324222510.png"><br>由于没有复杂的求导和矩阵运算，因此效率很高，并有稳定的分类效率，且对小规模的数据表现很好，能个处理多分类任务，适合增量式训练。</p><h2>C4.5算法（在weka中为J48算法）</h2><p>C4.5 算法一种分类决策树算法 , 决策树算法作为一种分类算法，目标就是将具有p维特征的n个样本分到c个类别中去。相当于做一个投影，c=f(n)，将样本经过一种变换赋予一种类别标签。而决策树为了实现该目的，把分类的过程表示为一棵树，每次通过选择一个特征pi来进行分叉。C4.5的核心算法是由Quinlan首先提出的ID3算法。该算法是以信息论为基础，以信息熵和信息增益度为衡量标准，从而实现对数据的归纳分类。C4.5 算法继承了 ID3 算法的优点，并在以下几方面对 ID3 算法进行了改进：<br>用信息增益率来选择属性，克服了用信息增益选择属性时偏向选择取值多的属性的不足<br>在树构造过程中进行剪枝；<br>能够完成对连续属性的离散化处理；<br>能够对不完整数据进行处理。<br>C4.5 算法有如下优点：产生的分类规则易于理解，准确率较高。其缺点是：在构造树的过程中，需要对数据集进行多次的顺序扫描和排序，因而导致算法的低效。</p><h1>数据挖掘</h1><p>本文采用交叉验证（N-folds-Cross-validation）方法，该方法是将训练集分为N份，采用其中的N-1份做训练，而使用其中的1份做测试，像这样循环N次，最后来整体计算结果。在weka中，先打开本文所采用的seed.arff文件，再选择到classify面板。选择不同的分类器，并都使用默认参数。并在Test options选择默认的十折交叉验证，之后点击More options，选择其中的Output predictions。之后点击start按钮，启动实验。运行结束后在右侧的Classifier output里面，我们能够看到实验结果。<br>在分类器的Classifier output中，软件默认的输出选项有Run information，这项给出了特征，样本和模型验证等一些概要信息；在Classifier model中展现出的是模型的一些参数，使用不同的分类算法会给出不同的信息。在最下面会有模型验证的结果，会有一些常用的来验证标准的结果，比如准确率（Precision），召回率（Recall），真阳性率（True positive rate），假阳性率（False positive rate），F值（F-Measure），Roc面积（Roc Area）等。Confusion Matrix能利用矩阵的形式给出分类情况，通过该矩阵，我们可以很清晰的看出正确分类或者错误分类的某一类样本的数量和分类的具体数量情况。<br>利用J48（C4.5）算法的分析结果：<br> <img src="https://www.hiyiguo.cn/usr/uploads/2020/03/1363937552.png"  width="100%" alt="1.png" title="1.png"><br>生成的决策树如下：<br> <img src="https://www.hiyiguo.cn/usr/uploads/2020/03/322674632.png" alt="2.png" width="100%" title="2.png"><br>利用KNN算法的分析结果：<br> <img src="https://www.hiyiguo.cn/usr/uploads/2020/03/2479310301.png" alt="3.png" width="100%" title="3.png"><br>利用朴素贝利叶算法的分析结果：<br> <img src="https://www.hiyiguo.cn/usr/uploads/2020/03/1938913284.png"  width="100%" alt="4.png" title="4.png"><br>由上述挖掘的结果可以发现，利用KNN算法的正确率达到94.2857%，而使用朴素贝利叶和J48算法的结果分别为91.4286%和91.9048%。<br>同时从其他验证标准的结果来看，使用KNN算法的结果相比而言在该数据集中结果更优。因此在该数据集实例量附近时采用KNN算法更加优秀，能够更好的由软X射线技术检测得到的种子几何特性数据来预测当前所测种子的种类。</p><h1>结语</h1><p>本文通过weka开源数据挖掘软件，对种子的几何特性进行分类分析，并使用多种分类算法来实现预测种子的种类，有一定的实际价值。同时本文在实验过程中介绍了weka的基本使用方法， weka所使用的ARFF格式文件，以及本文所需用到的分类算法思想，对于初学者有一定的参考价值。</p><h1>参考文献</h1><p>[1]孙涛,高军晖.基于Weka的江苏13个地级市温度聚类分析[J].科技创新导报,2016,13(21):92-94.<br>[2]韩建宁. 开源机器学习Weka环境下的数据分类算法实现及应用[J]. 信息系统工程, 2016, 卷缺失(4): 页码范围缺失.<br>[3] 机器学习：WEKA的应用之 J48（C4.5）[EB/OL]. <a href="https://blog.csdn.net/oMengLiShuiXiang1234/article/details/48343987.">https://blog.csdn.net/oMengLiShuiXiang1234/article/details/48343987.</a><br>[4] 朴素贝叶斯算法（Naive Bayes）[EB/OL]. <a href="https://www.cnblogs.com/huangyc/p/9734956.html.">https://www.cnblogs.com/huangyc/p/9734956.html.</a><br>[5] Dua, D. and Graff, C. (2019). UCI Machine Learning Repository [<a href="http://archive.ics.uci.edu/ml">http://archive.ics.uci.edu/ml</a>]. Irvine, CA: University of California, School of Information and Computer Science.<br>[6] kNN算法：K最近邻(kNN，k-NearestNeighbor)分类算法[EB/OL]. <a href="https://www.cnblogs.com/jyroy/p/9427977.html.">https://www.cnblogs.com/jyroy/p/9427977.html.</a><br>[7] Weka 3: Machine Learning Software in Java[EB/OL]. <a href="https://www.cs.waikato.ac.nz/ml/weka/.">https://www.cs.waikato.ac.nz/ml/weka/.</a><br>[8] 初试weka数据挖掘[EB/OL]. <a href="https://www.cnblogs.com/hxsyl/p/3307343.html.">https://www.cnblogs.com/hxsyl/p/3307343.html.</a></p>
+			<aside id="authorInfo"> 
+				<h2>依果</h2>
+			  <p>非特殊说明，本博客所有文章均为博主原创。 如若转载，请注明出处!</p>
+            </aside>
+		</section>
+		
+		<section id="sidebar"> 
+			<nav>
+				<ul>
+				  	<li><a href="index.html">返回首页</a></li>
+					<li><a href="article1.html">利用qt5框架实现的学生信息管理系统</a></li>
+				<li><a href="article2.html">基于weka的对种子几何特性的分类分析</a></li>
+				<li><a href="article3.html">devc++调试讲解</a></li>
+				</ul>
+			</nav>
+		</section>
+		
+	  <div class="copyright">&copy;2020&nbsp;&nbsp;<strong>依果的小站</strong></div>
+		
+	</div>
+</body>
+</html>

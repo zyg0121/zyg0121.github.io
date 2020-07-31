@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="css/index.css" rel="stylesheet" type="text/css">
+
+<script type="application/javascript">
+	window.onload=init;
+	function init() {
+		time();
+		window.setInterval("time()",1000);
+	}
+	function time() {
+		var obj=document.getElementById("time");
+		var date=new Date();
+		obj.innerHTML="现在是"+date.toLocaleString();
+	}
+</script>
+
+<title>依果的小站</title>
+</head>
+<body>
+	<div class="container">
+		
+		<header> 
+			<a href="#"> <h4 class="logo">依果的小站</h4></a>
+			<nav>
+				<ul>
+					<li><a href="#home">首页</a></li>
+					<li><a href="#about">关于</a></li>
+					<li><a href="#banner">动态</a></li>
+					<li><a href="#contact">联系我</a></li>
+					<li><a href="https://www.hiyiguo.cn" target="_blank">博客网站</a></li>
+				</ul>
+			</nav>
+		</header>
+		
+		<section class="home" id="home">
+			<h2 class="home_header">依果的小站</h2>
+			<p class="tagline">欢迎您来到依果的小站</p>
+		</section>
+		
+		<section class="about" id="about">
+			<h1 class="about_words">关于</h1>
+		  <p class="text_column">偶只是一枚普通的大学生，就读于山大威海机信学院软件工程。。。<br>目前还是一枚大二新生，学习了的知识还很少，平常也偶尔喜欢运动。。。<br>所以在这里，希望我在自己学习相关文化知识的同时，有更多的大佬们能带我起飞。。。</p>
+		</section>
+		
+		<div class="gallery">
+			<div class="thumbnail">
+				<h1 class="stats">2013</h1>
+			  	<h4>进入初中</h4>
+			  	<p>在兴趣选修课上接触了网页制作</p>
+			</div>
+			<div class="thumbnail">
+			  	<h1 class="stats">2016</h1>
+			  	<h4>进入高中</h4>
+			  	<p>在信息课上学习了编程语言</p>
+			</div>
+			<div class="thumbnail">
+			  	<h1 class="stats">2019</h1>
+			  	<h4>进入大学</h4>
+			  	<p>开始在山威系统学习cs</p>
+			</div>
+			<div class="thumbnail">
+			  	<h1 class="stats">2020</h1>
+			  	<h4>面向未来</h4>
+			  	<p>继续前进，探索未知</p>
+			</div>
+		</div>
+		
+		<section class="banner" id="banner">
+			<h2 class="links">我的最新动态</h2>
+			<ul class="links_ul">
+				<li><a href="article1.html" target="_blank">利用qt5框架实现的学生信息管理系统</a></li>
+				<li><a href="article2.html" target="_blank">基于weka的对种子几何特性的分类分析</a></li>
+				<li><a href="article3.html" target="_blank">devc++调试讲解</a></li>
+			</ul>
+		</section>
+		
+		<section class="footer_banner" id="contact">
+		  <p class="home_header">如果你有什么想说的，请在下方留言</p>
+			<form action="" method="post" class="elegant-aero">
+				<table>
+					<tr>
+						<td>姓名：</td>
+						<td><input id="name" type="text" name="name" placeholder="请输入姓名" /></td>
+					</tr>
+					<tr>
+						<td>邮件：</td>
+						<td><input id="email" type="email" name="email" placeholder="请输入邮件地址" /></td>
+					</tr>
+					<tr>
+						<td>留言：</td>
+						<td><textarea rows="50" cols="50" name="text" id="textarea" placeholder="快来留言吧~" required=""></textarea></td>
+					</tr>
+					<tr> 
+						<td></td>
+						<td class="btrr">
+							<input type="submit" class="button" value="提交"  />
+						</td> 
+					</tr>
+				</table>
+
+			</form>
+
+		</section>
+		
+  		<div class="copyright">&copy;2020&nbsp;&nbsp;<strong>依果的小站</strong></div>
+		<div id="time"></div>
+		
+	</div>
+</body>
+</html>
