@@ -1,9 +1,8 @@
 
-# Yiguo (Echo) Zhou
+# Zhou Yiguo (Echo)
 
-**Phone:** (852) 5957-1286 | **Email:** ygzhou21@outlook.com, ygzhou3-c@my.cityu.edu.hk
+**Email:** ygzhou21@outlook.com
 **GitHub:** [github.com/zyg0121](https://github.com/zyg0121)
-**Visa:** Student Visa with NOL
 
 ---
 
@@ -11,12 +10,16 @@
 
 **City University of Hong Kong**
 *MSc in Computer Science* &nbsp;&nbsp;&nbsp; _(Sep 2024 – Oct 2025, anticipated)_
+
 GPA: 3.32/4.30
+
 Relevant Courses: Software Engineering, Data Engineering, Vision and Image, Cloud Computing, NLP, eCommerce
 
 **Shandong University**
 *BEng in Software Engineering* &nbsp;&nbsp;&nbsp; _(Sep 2019 – Jun 2023)_
+
 GPA: 3.4/4.0
+
 Relevant Courses: High-level Programming Language Design, Computer Networks, Computer Organization, Operating Systems, Data Structures, Database Systems, Information Security
 
 ---
